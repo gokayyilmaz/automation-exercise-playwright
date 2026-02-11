@@ -1,31 +1,33 @@
-import { test, expect } from "@playwright/test";
-import { createRandomUser } from "./utils/test-data";
-import { HomePage } from "./pages/home-page";
-import { SignupLoginPage } from "./pages/signup-login-page";
-import { SignupPage } from "./pages/signup-page";
+import { test, expect } from "./fixtures/pages.fixture";
+import { createRandomUser } from "./utils/user-data.factory";
 
-test("register user", async ({ page }) => {
+test("register user", async ({
+  page,
+  homePage,
+  signupLoginPage,
+  signupPage,
+}) => {
   const user = createRandomUser();
-  const home = new HomePage(page);
-  const signupLogin = new SignupLoginPage(page);
-  const signup = new SignupPage(page);
 
-  await home.goto();
-  await home.expectTitle();
-  await home.clickSignupLoginLink();
-  await signupLogin.expectNewUserSignupTextVisible();
+  await homePage.goto();
+  await homePage.expectTitle();
+  await homePage.clickSignupLoginLink();
+  await signupLoginPage.expectNewUserSignupTextVisible();
 
-  await signupLogin.fillPreSignupForm({ seed: user.seed, email: user.email });
-  await signupLogin.clickSignupButton();
-  await signup.expectAccountInformationTextVisible();
+  await signupLoginPage.fillPreSignupForm({
+    seed: user.seed,
+    email: user.email,
+  });
+  await signupLoginPage.clickSignupButton();
+  await signupPage.expectAccountInformationTextVisible();
 
-  await signup.fillSignupFormAccountInfo({
+  await signupPage.fillSignupFormAccountInfo({
     seed: user.seed,
     days: user.days,
     months: user.months,
     years: user.years,
   });
-  await signup.fillSignupFormAddressInfo({
+  await signupPage.fillSignupFormAddressInfo({
     seed: user.seed,
     country: user.country,
     state: user.state,
@@ -33,14 +35,14 @@ test("register user", async ({ page }) => {
     zipcode: user.zipcode,
     mobileNumber: user.mobileNumber,
   });
-  await signup.clickCreateAccountButton()
+  await signupPage.clickCreateAccountButton();
   await expect(page.getByText("Account Created!")).toBeVisible();
-  await signup.clickContinueButton()
-  await expect(home.loggedUserText).toHaveText(user.seed);
-  
-  await home.clickDeleteAccountLink()
+  await signupPage.clickContinueButton();
+  await expect(homePage.loggedUserText).toHaveText(user.seed);
+
+  await homePage.clickDeleteAccountLink();
   await expect(
     page.getByRole("heading", { name: "ACCOUNT DELETED!" }),
   ).toBeVisible();
-  await home.clickContinueButton()
+  await homePage.clickContinueButton();
 });
