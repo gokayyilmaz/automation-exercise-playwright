@@ -1,54 +1,46 @@
 import { test, expect } from "@playwright/test";
+import { createRandomUser } from "./utils/test-data";
+import { HomePage } from "./pages/home-page";
+import { SignupLoginPage } from "./pages/signup-login-page";
+import { SignupPage } from "./pages/signup-page";
 
 test("register user", async ({ page }) => {
-  await page.goto("https://automationexercise.com/");
-  await expect(page).toHaveTitle("Automation Exercise");
+  const user = createRandomUser();
+  const home = new HomePage(page);
+  const signupLogin = new SignupLoginPage(page);
+  const signup = new SignupPage(page);
 
-  await page.getByRole("link", { name: /Signup \/ Login/ }).click();
-  await expect(page.getByText("New User Signup!")).toBeVisible();
+  await home.goto();
+  await home.expectTitle();
+  await home.clickSignupLoginLink();
+  await signupLogin.expectNewUserSignupTextVisible();
 
-  const randText = `${Date.now()}${Math.random().toString(36).slice(2, 8)}`;
-  const name = randText;
-  const email = `user_${randText}@testmail.com`;
-  await page.getByTestId("signup-name").fill(name);
-  await page.getByTestId("signup-email").fill(email);
-  await page.getByRole("button", { name: "Signup" }).click();
-  await expect(page.getByText("Enter Account Information")).toBeVisible();
+  await signupLogin.fillPreSignupForm({ seed: user.seed, email: user.email });
+  await signupLogin.clickSignupButton();
+  await signup.expectAccountInformationTextVisible();
 
-  await page.locator("#id_gender1").check();
-  await page.locator("#password").fill(randText);
-  await page.locator("#days").selectOption("26");
-  await page.locator("#months").selectOption("7");
-  await page.locator("#years").selectOption("1996");
-  await page
-    .getByRole("checkbox", { name: "Sign up for our newsletter!" })
-    .check();
-  await page
-    .getByRole("checkbox", {
-      name: "Receive special offers from our partners!",
-    })
-    .check();
-
-  await page.locator("#first_name").fill(randText);
-  await page.locator("#last_name").fill(randText);
-  await page.locator("#company").fill(randText);
-  await page.locator("#address1").fill(randText);
-  await page.locator("#address2").fill(randText);
-  await page.locator("#country").selectOption("United States");
-  await page.locator("#state").fill("California");
-  await page.locator("#city").fill("San Francisco");
-  await page.locator("#zipcode").fill("11111");
-  await page.locator("#mobile_number").fill("5995555555");
-  await page.getByRole("button", { name: "Create Account" }).click();
+  await signup.fillSignupFormAccountInfo({
+    seed: user.seed,
+    days: user.days,
+    months: user.months,
+    years: user.years,
+  });
+  await signup.fillSignupFormAddressInfo({
+    seed: user.seed,
+    country: user.country,
+    state: user.state,
+    city: user.city,
+    zipcode: user.zipcode,
+    mobileNumber: user.mobileNumber,
+  });
+  await signup.clickCreateAccountButton()
   await expect(page.getByText("Account Created!")).toBeVisible();
-
-  await page.getByRole("link", { name: "Continue" }).click();
-  const loggedUser = page.locator('a:has-text("Logged in as") b');
-  await expect(loggedUser).toHaveText(randText);
-  await page.locator('a[href="/delete_account"]').click();
+  await signup.clickContinueButton()
+  await expect(home.loggedUserText).toHaveText(user.seed);
+  
+  await home.clickDeleteAccountLink()
   await expect(
     page.getByRole("heading", { name: "ACCOUNT DELETED!" }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Continue" }).click();
-  
+  await home.clickContinueButton()
 });
