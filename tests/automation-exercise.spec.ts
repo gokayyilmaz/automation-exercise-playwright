@@ -90,6 +90,7 @@ test("Test Case 5: Register User with existing email", async ({
 });
 
 test("Test Case 6: Contact Us Form", async ({
+  page,
   homePage,
   contactUsPage,
   user,
@@ -107,7 +108,11 @@ test("Test Case 6: Contact Us Form", async ({
   });
 
   await contactUsPage.submitFormAndAcceptDialog();
-  await contactUsPage.expectSuccessMessageVisible();
+  await expect(
+    page
+      .locator("#contact-page")
+      .getByText("Success! Your details have been submitted successfully."),
+  ).toBeVisible();
   await contactUsPage.clickHomeButton();
   await homePage.expectHomePageVisible();
 });

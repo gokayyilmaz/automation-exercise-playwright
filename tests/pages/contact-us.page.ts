@@ -9,7 +9,6 @@ export class ContactUsPage {
   readonly yourMessageHereTextbox: Locator;
   readonly uploadFileInput: Locator;
   readonly submitButton: Locator;
-  readonly successMessage: Locator;
   readonly homeButton: Locator;
 
   constructor(page: Page) {
@@ -21,14 +20,9 @@ export class ContactUsPage {
     this.yourMessageHereTextbox = page.getByRole("textbox", {
       name: "Your Message Here",
     });
-    this.uploadFileInput = page.locator('input[name="upload_file"]');
-    this.submitButton = page.locator('input[data-qa="submit-button"]');
-    this.successMessage = page.locator(
-      "#contact-page .status.alert.alert-success",
-    );
-    this.homeButton = page.locator("#form-section").getByRole("link", {
-      name: "Home",
-    });
+    this.uploadFileInput = page.getByRole("button", { name: "Choose File" });
+    this.submitButton = page.getByRole("button", { name: "Submit" });
+    this.homeButton = page.locator("#form-section").getByRole("link", { name: "Home" });
   }
 
   async goto() {
@@ -82,10 +76,6 @@ export class ContactUsPage {
 
     await this.submitButton.click();
     await dialogAccepted;
-  }
-
-  async expectSuccessMessageVisible() {
-    await expect(this.successMessage).toBeVisible();
   }
 
   async clickHomeButton() {
