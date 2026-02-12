@@ -1,17 +1,22 @@
 import { test as base } from "@playwright/test";
+import { createRandomUser, type UserData } from "../utils/user-data.factory";
 import { HomePage } from "../pages/home.page";
 import { SignupLoginPage } from "../pages/signup-login.page";
 import { SignupPage } from "../pages/signup.page";
-import { createRandomUser, type UserData } from "../utils/user-data.factory";
+import { ContactUsPage } from "../pages/contact-us.page";
 
 type PageFixtures = {
+  user: UserData;
   homePage: HomePage;
   signupLoginPage: SignupLoginPage;
   signupPage: SignupPage;
-  user: UserData;
+  contactUsPage: ContactUsPage;
 };
 
 export const test = base.extend<PageFixtures>({
+  user: async ({}, use) => {
+    await use(createRandomUser());
+  },
   homePage: async ({ page }, use) => {
     const homePage = new HomePage(page);
     await use(homePage);
@@ -27,9 +32,10 @@ export const test = base.extend<PageFixtures>({
     await use(signupPage);
   },
 
-  user: async({}, use) => {
-    await use(createRandomUser());
-  }
+  contactUsPage: async ({ page }, use) => {
+    const contactUsPage = new ContactUsPage(page);
+    await use(contactUsPage);
+  },
 });
 
 export { expect } from "@playwright/test";

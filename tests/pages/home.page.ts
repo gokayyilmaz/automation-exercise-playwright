@@ -7,6 +7,8 @@ export class HomePage {
   readonly deleteAccountLink: Locator;
   readonly continueButton: Locator;
   readonly logoutLink: Locator;
+  readonly contactUsButton: Locator;
+  readonly homeSlider: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -15,10 +17,12 @@ export class HomePage {
     this.deleteAccountLink = page.locator('a[href="/delete_account"]');
     this.logoutLink = page.locator('a[href="/logout"]');
     this.continueButton = page.getByRole("link", { name: "Continue" });
+    this.contactUsButton = page.getByRole("link", { name: "Contact us" });
+    this.homeSlider = page.locator("#slider");
   }
 
   async goto() {
-    await this.page.goto("https://automationexercise.com/");
+    await this.page.goto("http://automationexercise.com/");
   }
 
   async clickSignupLoginLink() {
@@ -27,6 +31,10 @@ export class HomePage {
 
   async expectTitle() {
     await expect(this.page).toHaveTitle("Automation Exercise");
+  }
+
+  async expectHomePageVisible() {
+    await expect(this.homeSlider).toBeVisible();
   }
 
   async clickDeleteAccountLink() {
@@ -39,5 +47,9 @@ export class HomePage {
 
   async clickContinueButton() {
     await this.continueButton.click();
+  }
+
+  async clickContactUsButton() {
+    await this.contactUsButton.click();
   }
 }

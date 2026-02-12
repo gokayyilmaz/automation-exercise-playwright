@@ -31,6 +31,10 @@ export class SignupLoginPage {
     await expect(this.loginToYourAccountText).toBeVisible();
   }
 
+  async expectTitle() {
+    await expect(this.page).toHaveTitle("Automation Exercise - Signup / Login")
+  }
+
   async fillPreSignupForm(data: { seed: string; email: string }) {
     await this.signupNameTextbox.fill(data.seed);
     await this.signupEmailTextbox.fill(data.email);
