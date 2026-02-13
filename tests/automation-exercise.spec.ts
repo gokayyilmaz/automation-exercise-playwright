@@ -116,3 +116,11 @@ test("Test Case 6: Contact Us Form", async ({
   await contactUsPage.clickHomeButton();
   await homePage.expectHomePageVisible();
 });
+
+test("Test Case 7: Verify Test Cases Page", async({page, homePage, contactUsPage}) => {
+  await homePage.goto()
+  await homePage.expectHomePageVisible()
+  await homePage.clickContactUsButton()
+  await contactUsPage.clickTestCasesLink()
+  await expect(page).toHaveTitle(/Test Cases/)
+})

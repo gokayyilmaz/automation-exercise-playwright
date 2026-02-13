@@ -22,7 +22,7 @@ export class HomePage {
   }
 
   async goto() {
-    await this.page.goto("http://automationexercise.com/");
+    await this.page.goto("https://automationexercise.com/");
   }
 
   async clickSignupLoginLink() {
