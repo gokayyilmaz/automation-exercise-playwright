@@ -9,6 +9,7 @@ export class HomePage {
   readonly logoutLink: Locator;
   readonly contactUsButton: Locator;
   readonly homeSlider: Locator;
+  readonly testCasesLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -19,10 +20,13 @@ export class HomePage {
     this.continueButton = page.getByRole("link", { name: "Continue" });
     this.contactUsButton = page.getByRole("link", { name: "Contact us" });
     this.homeSlider = page.locator("#slider");
+    this.testCasesLink = page
+      .locator("#header")
+      .getByRole("link", { name: "Test Cases" });
   }
 
   async goto() {
-    await this.page.goto("https://automationexercise.com/");
+    await this.page.goto("http://automationexercise.com/");
   }
 
   async clickSignupLoginLink() {
@@ -51,5 +55,21 @@ export class HomePage {
 
   async clickContactUsButton() {
     await this.contactUsButton.click();
+  }
+
+  async clickTestCasesLink() {
+    await this.testCasesLink.click();
+    const iframes = this.page.locator("iframe[name^='aswift_']")
+    
+    const iframesCount = await iframes.count();
+    console.log(iframes)
+    console.log(iframesCount)
+    for (let i = 0; i < iframesCount; i++) {
+      const dismissButton = iframes.nth(i).contentFrame().locator("#dismiss-button");
+      if (await dismissButton.isVisible()) {
+        await dismissButton.click();
+        break;
+      }
+    }
   }
 }

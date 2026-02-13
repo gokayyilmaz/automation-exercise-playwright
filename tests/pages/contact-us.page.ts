@@ -10,7 +10,6 @@ export class ContactUsPage {
   readonly uploadFileInput: Locator;
   readonly submitButton: Locator;
   readonly homeButton: Locator;
-  readonly testCasesLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -26,7 +25,6 @@ export class ContactUsPage {
     this.homeButton = page
       .locator("#form-section")
       .getByRole("link", { name: "Home" });
-    this.testCasesLink = page.getByRole("link", { name: "Test Cases" });
   }
 
   async goto() {
@@ -84,9 +82,5 @@ export class ContactUsPage {
 
   async clickHomeButton() {
     await this.homeButton.click();
-  }
-
-  async clickTestCasesLink() {
-    await this.testCasesLink.click();
   }
 }
