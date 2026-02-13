@@ -27,10 +27,6 @@ export class ContactUsPage {
       .getByRole("link", { name: "Home" });
   }
 
-  async goto() {
-    await this.page.goto("https://automationexercise.com/");
-  }
-
   async expectGetInTouchTextVisible() {
     await expect(this.getInTouchText).toBeVisible();
   }

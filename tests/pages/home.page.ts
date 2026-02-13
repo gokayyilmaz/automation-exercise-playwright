@@ -59,13 +59,15 @@ export class HomePage {
 
   async clickTestCasesLink() {
     await this.testCasesLink.click();
-    const iframes = this.page.locator("iframe[name^='aswift_']")
-    
+
+    const iframes = this.page.locator("iframe[name^='aswift_']");
     const iframesCount = await iframes.count();
-    console.log(iframes)
-    console.log(iframesCount)
+
     for (let i = 0; i < iframesCount; i++) {
-      const dismissButton = iframes.nth(i).contentFrame().locator("#dismiss-button");
+      const dismissButton = iframes
+        .nth(i)
+        .contentFrame()
+        .locator("#dismiss-button");
       if (await dismissButton.isVisible()) {
         await dismissButton.click();
         break;
