@@ -1,7 +1,7 @@
 import { test, expect } from "./fixtures/pages.fixture";
 import { registerUser } from "./helpers/auth.helper";
 
-test("Test Case 1: Register User", async ({
+test("E2E Test Case 1: Register User", async ({
   page,
   homePage,
   signupLoginPage,
@@ -18,7 +18,7 @@ test("Test Case 1: Register User", async ({
   await homePage.clickContinueButton();
 });
 
-test("Test Case 2: Login User with correct email and password", async ({
+test("E2E Test Case 2: Login User with correct email and password", async ({
   page,
   homePage,
   signupLoginPage,
@@ -40,7 +40,7 @@ test("Test Case 2: Login User with correct email and password", async ({
   ).toBeVisible();
 });
 
-test("Test Case 3: Login User with incorrect email and password", async ({
+test("E2E Test Case 3: Login User with incorrect email and password", async ({
   page,
   homePage,
   signupLoginPage,
@@ -56,7 +56,7 @@ test("Test Case 3: Login User with incorrect email and password", async ({
   ).toBeVisible();
 });
 
-test("Test Case 4: Logout User", async ({
+test("E2E Test Case 4: Logout User", async ({
   page,
   homePage,
   signupLoginPage,
@@ -68,7 +68,7 @@ test("Test Case 4: Logout User", async ({
   await signupLoginPage.expectTitle();
 });
 
-test("Test Case 5: Register User with existing email", async ({
+test("E2E Test Case 5: Register User with existing email", async ({
   page,
   homePage,
   signupLoginPage,
@@ -89,7 +89,7 @@ test("Test Case 5: Register User with existing email", async ({
   await expect(page.getByText("Email Address already exist!")).toBeVisible();
 });
 
-test("Test Case 6: Contact Us Form", async ({
+test("E2E Test Case 6: Contact Us Form", async ({
   page,
   homePage,
   contactUsPage,
@@ -117,7 +117,7 @@ test("Test Case 6: Contact Us Form", async ({
   await homePage.expectHomePageVisible();
 });
 
-test("Test Case 7: Verify Test Cases Page", async({page, homePage, contactUsPage}) => {
+test("E2E Test Case 7: Verify Test Cases Page", async({page, homePage, contactUsPage}) => {
   await homePage.goto()
   await homePage.expectHomePageVisible()
   await homePage.clickTestCasesLink()
