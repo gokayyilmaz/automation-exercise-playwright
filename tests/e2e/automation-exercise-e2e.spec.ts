@@ -117,9 +117,44 @@ test("E2E Test Case 6: Contact Us Form", async ({
   await homePage.expectHomePageVisible();
 });
 
-test("E2E Test Case 7: Verify Test Cases Page", async({page, homePage, contactUsPage}) => {
-  await homePage.goto()
-  await homePage.expectHomePageVisible()
-  await homePage.clickTestCasesLink()
-  await expect(page).toHaveTitle(/Test Cases/)
-})
+test("E2E Test Case 7: Verify Test Cases Page", async ({
+  page,
+  homePage,
+  contactUsPage,
+}) => {
+  await homePage.goto();
+  await homePage.expectHomePageVisible();
+  await homePage.clickTestCasesLink();
+  await expect(page).toHaveTitle(/Test Cases/);
+});
+
+test("E2E Test Case 8: Verify All Products and product detail page", async ({
+  page,
+  homePage,
+  productsPage,
+  productPage,
+}) => {
+  await homePage.goto();
+  await homePage.expectHomePageVisible();
+  await homePage.clickProductsLink();
+  await productsPage.expectTitle();
+  expect(page.locator(".features_items")).toBeVisible();
+  await productsPage.clickViewProductLinkFirst();
+  await productPage.expectTitle();
+  expect(page.locator(".product-information h2")).toBeVisible();
+  expect(
+    page.locator(".product-information p", { hasText: "Category" }),
+  ).toBeVisible();
+  expect(
+    page.locator(".product-information span span", { hasText: "Rs." }),
+  ).toBeVisible();
+  expect(
+    page.locator(".product-information p", { hasText: "Availability" }),
+  ).toBeVisible();
+  expect(
+    page.locator(".product-information p", { hasText: "Condition" }),
+  ).toBeVisible();
+  expect(
+    page.locator(".product-information p", { hasText: "Brand" }),
+  ).toBeVisible();
+});

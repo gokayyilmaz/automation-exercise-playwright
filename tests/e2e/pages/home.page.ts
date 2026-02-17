@@ -10,6 +10,7 @@ export class HomePage {
   readonly contactUsButton: Locator;
   readonly homeSlider: Locator;
   readonly testCasesLink: Locator;
+  readonly productsLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -23,6 +24,7 @@ export class HomePage {
     this.testCasesLink = page
       .locator("#header")
       .getByRole("link", { name: "Test Cases" });
+    this.productsLink = page.locator("a[href='/products']");
   }
 
   async goto() {
@@ -59,7 +61,15 @@ export class HomePage {
 
   async clickTestCasesLink() {
     await this.testCasesLink.click();
+    await this.dismissAdPopupIfVisible();
+  }
 
+  async clickProductsLink() {
+    await this.productsLink.click();
+    await this.dismissAdPopupIfVisible();
+  }
+
+  private async dismissAdPopupIfVisible() {
     const iframes = this.page.locator("iframe[name^='aswift_']");
     const iframesCount = await iframes.count();
 
@@ -68,9 +78,10 @@ export class HomePage {
         .nth(i)
         .contentFrame()
         .locator("#dismiss-button");
+
       if (await dismissButton.isVisible()) {
         await dismissButton.click();
-        break;
+        return;
       }
     }
   }
