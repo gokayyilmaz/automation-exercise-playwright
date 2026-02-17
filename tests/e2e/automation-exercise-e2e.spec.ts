@@ -141,20 +141,20 @@ test("E2E Test Case 8: Verify All Products and product detail page", async ({
   expect(page.locator(".features_items")).toBeVisible();
   await productsPage.clickViewProductLinkFirst();
   await productPage.expectTitle();
-  expect(page.locator(".product-information h2")).toBeVisible();
-  expect(
+  await expect(page.locator(".product-information h2")).toBeVisible();
+  await expect(
     page.locator(".product-information p", { hasText: "Category" }),
   ).toBeVisible();
-  expect(
+  await expect(
     page.locator(".product-information span span", { hasText: "Rs." }),
   ).toBeVisible();
-  expect(
+  await expect(
     page.locator(".product-information p", { hasText: "Availability" }),
   ).toBeVisible();
-  expect(
+  await expect(
     page.locator(".product-information p", { hasText: "Condition" }),
   ).toBeVisible();
-  expect(
+  await expect(
     page.locator(".product-information p", { hasText: "Brand" }),
   ).toBeVisible();
 });
