@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
+import { resolve } from "node:path";
 
 export class ContactUsPage {
   readonly page: Page;
@@ -36,7 +37,9 @@ export class ContactUsPage {
     await this.emailTextbox.fill(data.email);
     await this.subjectTextbox.fill(data.seed);
     await this.yourMessageHereTextbox.fill(data.seed);
-    await this.uploadFileInput.setInputFiles("tests/utils/sample.txt");
+    await this.uploadFileInput.setInputFiles(
+      resolve(__dirname, "../utils/sample.txt"),
+    );
   }
 
   async waitForSubmitHandlerReady() {
