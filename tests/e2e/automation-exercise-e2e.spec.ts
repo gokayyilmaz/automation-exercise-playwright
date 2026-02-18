@@ -138,7 +138,7 @@ test("E2E Test Case 8: Verify All Products and product detail page", async ({
   await homePage.expectHomePageVisible();
   await homePage.clickProductsLink();
   await productsPage.expectTitle();
-  expect(page.locator(".features_items")).toBeVisible();
+  await expect(page.locator(".features_items")).toBeVisible();
   await productsPage.clickViewProductLinkFirst();
   await productPage.expectTitle();
   await expect(page.locator(".product-information h2")).toBeVisible();
@@ -157,4 +157,26 @@ test("E2E Test Case 8: Verify All Products and product detail page", async ({
   await expect(
     page.locator(".product-information p", { hasText: "Brand" }),
   ).toBeVisible();
+});
+
+test("E2E Test Case 9: Search Product", async ({
+  page,
+  homePage,
+  productsPage,
+}) => {
+  await homePage.goto();
+  await homePage.expectHomePageVisible();
+  await homePage.clickProductsLink();
+  await productsPage.expectTitle();
+  await expect(page.locator(".features_items")).toBeVisible();
+  await productsPage.fillSearchProductTextbox("shirt");
+  await productsPage.clickSearchButton();
+  await expect(
+    page.getByRole("heading", { name: "SEARCHED PRODUCTS" }),
+  ).toBeVisible();
+  const results = await productsPage.getProductNames();
+  expect(results.length).toBeGreaterThan(0);
+  for (const result of results) {
+    expect(result).toMatch(new RegExp("shirt|top", "i"));
+  }
 });
