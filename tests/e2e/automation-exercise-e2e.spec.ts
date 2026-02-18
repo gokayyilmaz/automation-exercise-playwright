@@ -180,3 +180,21 @@ test("E2E Test Case 9: Search Product", async ({
     expect(result).toMatch(new RegExp("shirt|top", "i"));
   }
 });
+
+test("E2E Test Case 10: Verify Subscription in home page", async ({
+  page,
+  user,
+  homePage,
+}) => {
+  await homePage.goto();
+  await homePage.expectHomePageVisible();
+  await homePage.scroolToFooter();
+  await expect(
+    page.getByRole("heading", { name: "SUBSCRIPTION" }),
+  ).toBeVisible();
+  await homePage.fillSubscribeEmailTextbox(user.email);
+  await homePage.clickSubscribeButton();
+  await expect(
+    page.getByText("You have been successfully subscribed!"),
+  ).toBeVisible();
+});

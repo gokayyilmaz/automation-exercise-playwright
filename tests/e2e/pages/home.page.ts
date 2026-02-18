@@ -11,6 +11,9 @@ export class HomePage {
   readonly homeSlider: Locator;
   readonly testCasesLink: Locator;
   readonly productsLink: Locator;
+  readonly footer: Locator;
+  readonly subscribeEmailTextbox: Locator;
+  readonly subscribeButton: Locator
 
   constructor(page: Page) {
     this.page = page;
@@ -25,6 +28,11 @@ export class HomePage {
       .locator("#header")
       .getByRole("link", { name: "Test Cases" });
     this.productsLink = page.locator("a[href='/products']");
+    this.footer = page.locator(".footer-bottom");
+    this.subscribeEmailTextbox = page.getByRole("textbox", {
+      name: "Your email address",
+    });
+    this.subscribeButton = page.locator("#subscribe")
   }
 
   async goto() {
@@ -84,5 +92,17 @@ export class HomePage {
         return;
       }
     }
+  }
+
+  async scroolToFooter() {
+    await this.footer.scrollIntoViewIfNeeded();
+  }
+
+  async fillSubscribeEmailTextbox(email: string) {
+    this.subscribeEmailTextbox.fill(email)
+  }
+
+  async clickSubscribeButton() {
+    this.subscribeButton.click()
   }
 }
