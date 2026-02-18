@@ -13,7 +13,8 @@ export class HomePage {
   readonly productsLink: Locator;
   readonly footer: Locator;
   readonly subscribeEmailTextbox: Locator;
-  readonly subscribeButton: Locator
+  readonly subscribeButton: Locator;
+  readonly cartButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -32,7 +33,8 @@ export class HomePage {
     this.subscribeEmailTextbox = page.getByRole("textbox", {
       name: "Your email address",
     });
-    this.subscribeButton = page.locator("#subscribe")
+    this.subscribeButton = page.locator("#subscribe");
+    this.cartButton = page.locator("#header").locator('a[href="/view_cart"]');
   }
 
   async goto() {
@@ -99,10 +101,14 @@ export class HomePage {
   }
 
   async fillSubscribeEmailTextbox(email: string) {
-    this.subscribeEmailTextbox.fill(email)
+    await this.subscribeEmailTextbox.fill(email);
   }
 
   async clickSubscribeButton() {
-    this.subscribeButton.click()
+    await this.subscribeButton.click();
+  }
+
+  async clickCartButton() {
+    await this.cartButton.click();
   }
 }

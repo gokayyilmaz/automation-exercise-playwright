@@ -198,3 +198,23 @@ test("E2E Test Case 10: Verify Subscription in home page", async ({
     page.getByText("You have been successfully subscribed!"),
   ).toBeVisible();
 });
+
+test("E2E Test Case 11: Verify Subscription in Cart page", async ({
+  page,
+  user,
+  homePage,
+  cartPage,
+}) => {
+  await homePage.goto();
+  await homePage.expectHomePageVisible();
+  await homePage.clickCartButton();
+  await cartPage.scroolToFooter();
+  await expect(
+    page.getByRole("heading", { name: "SUBSCRIPTION" }),
+  ).toBeVisible();
+  await cartPage.fillSubscribeEmailTextbox(user.email);
+  await cartPage.clickSubscribeButton();
+  await expect(
+    page.getByText("You have been successfully subscribed!"),
+  ).toBeVisible();
+});
