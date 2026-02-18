@@ -218,3 +218,37 @@ test("E2E Test Case 11: Verify Subscription in Cart page", async ({
     page.getByText("You have been successfully subscribed!"),
   ).toBeVisible();
 });
+
+test("E2E Test Case 12: Add Products in Cart", async ({
+  page,
+  homePage,
+  productsPage,
+  cartPage,
+}) => {
+  await homePage.goto();
+  await homePage.expectHomePageVisible();
+  await homePage.clickProductsLink();
+  const productPrices = [
+    await productsPage.getProductPrice(0),
+    await productsPage.getProductPrice(1),
+  ];
+  await productsPage.hoverAndAddToCartTheProduct(0);
+  await productsPage.clickContinueShoppingButton();
+  await productsPage.hoverAndAddToCartTheProduct(1);
+  await productsPage.clickViewCartLink();
+
+  const productsRows = page.locator("#cart_info_table tbody tr");
+  await expect(productsRows).toHaveCount(2);
+  const numberOfProductsInCart = await productsRows.count();
+
+  for (let i = 0; i < numberOfProductsInCart; i++) {
+    const productRow = page.locator(`#product-${i + 1}`);
+    expect(await productRow.locator(".cart_price").innerText()).toBe(
+      productPrices.at(i),
+    );
+    expect(await productRow.locator(".cart_quantity").innerText()).toBe("1");
+    expect(await productRow.locator(".cart_total").innerText()).toBe(
+      productPrices.at(i),
+    );
+  }
+});

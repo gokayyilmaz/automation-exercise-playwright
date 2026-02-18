@@ -5,6 +5,7 @@ export class CartPage {
   readonly footer: Locator;
   readonly subscribeEmailTextbox: Locator;
   readonly subscribeButton: Locator;
+
   constructor(page: Page) {
     this.page = page;
     this.footer = page.locator(".footer-bottom");
@@ -25,4 +26,5 @@ export class CartPage {
   async clickSubscribeButton() {
     await this.subscribeButton.click();
   }
+
 }
