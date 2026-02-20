@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("API Test Case 1: Get All Products List", async ({ request }) => {
+test("Test Case 1: Get All Products List", async ({ request }) => {
   const response = await request.get(
     "https://automationexercise.com/api/productsList",
   );

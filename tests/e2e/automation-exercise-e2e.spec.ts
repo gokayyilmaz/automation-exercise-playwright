@@ -1,7 +1,7 @@
 import { test, expect } from "./fixtures/pages.fixture";
 import { registerUser } from "./helpers/auth.helper";
 
-test("E2E Test Case 1: Register User", async ({
+test("Test Case 1: Register User", async ({
   page,
   homePage,
   signupLoginPage,
@@ -18,7 +18,7 @@ test("E2E Test Case 1: Register User", async ({
   await homePage.clickContinueButton();
 });
 
-test("E2E Test Case 2: Login User with correct email and password", async ({
+test("Test Case 2: Login User with correct email and password", async ({
   page,
   homePage,
   signupLoginPage,
@@ -40,7 +40,7 @@ test("E2E Test Case 2: Login User with correct email and password", async ({
   ).toBeVisible();
 });
 
-test("E2E Test Case 3: Login User with incorrect email and password", async ({
+test("Test Case 3: Login User with incorrect email and password", async ({
   page,
   homePage,
   signupLoginPage,
@@ -56,7 +56,7 @@ test("E2E Test Case 3: Login User with incorrect email and password", async ({
   ).toBeVisible();
 });
 
-test("E2E Test Case 4: Logout User", async ({
+test("Test Case 4: Logout User", async ({
   page,
   homePage,
   signupLoginPage,
@@ -68,7 +68,7 @@ test("E2E Test Case 4: Logout User", async ({
   await signupLoginPage.expectTitle();
 });
 
-test("E2E Test Case 5: Register User with existing email", async ({
+test("Test Case 5: Register User with existing email", async ({
   page,
   homePage,
   signupLoginPage,
@@ -89,7 +89,7 @@ test("E2E Test Case 5: Register User with existing email", async ({
   await expect(page.getByText("Email Address already exist!")).toBeVisible();
 });
 
-test("E2E Test Case 6: Contact Us Form", async ({
+test("Test Case 6: Contact Us Form", async ({
   page,
   homePage,
   contactUsPage,
@@ -117,7 +117,7 @@ test("E2E Test Case 6: Contact Us Form", async ({
   await homePage.expectHomePageVisible();
 });
 
-test("E2E Test Case 7: Verify Test Cases Page", async ({
+test("Test Case 7: Verify Test Cases Page", async ({
   page,
   homePage,
   contactUsPage,
@@ -128,7 +128,7 @@ test("E2E Test Case 7: Verify Test Cases Page", async ({
   await expect(page).toHaveTitle(/Test Cases/);
 });
 
-test("E2E Test Case 8: Verify All Products and product detail page", async ({
+test("Test Case 8: Verify All Products and product detail page", async ({
   page,
   homePage,
   productsPage,
@@ -159,7 +159,7 @@ test("E2E Test Case 8: Verify All Products and product detail page", async ({
   ).toBeVisible();
 });
 
-test("E2E Test Case 9: Search Product", async ({
+test("Test Case 9: Search Product", async ({
   page,
   homePage,
   productsPage,
@@ -181,7 +181,7 @@ test("E2E Test Case 9: Search Product", async ({
   }
 });
 
-test("E2E Test Case 10: Verify Subscription in home page", async ({
+test("Test Case 10: Verify Subscription in home page", async ({
   page,
   user,
   homePage,
@@ -199,7 +199,7 @@ test("E2E Test Case 10: Verify Subscription in home page", async ({
   ).toBeVisible();
 });
 
-test("E2E Test Case 11: Verify Subscription in Cart page", async ({
+test("Test Case 11: Verify Subscription in Cart page", async ({
   page,
   user,
   homePage,
@@ -219,7 +219,7 @@ test("E2E Test Case 11: Verify Subscription in Cart page", async ({
   ).toBeVisible();
 });
 
-test("E2E Test Case 12: Add Products in Cart", async ({
+test("Test Case 12: Add Products in Cart", async ({
   page,
   homePage,
   productsPage,
@@ -252,3 +252,6 @@ test("E2E Test Case 12: Add Products in Cart", async ({
     );
   }
 });
+
+
+
