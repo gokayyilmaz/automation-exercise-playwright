@@ -15,6 +15,7 @@ export class HomePage {
   readonly subscribeEmailTextbox: Locator;
   readonly subscribeButton: Locator;
   readonly cartButton: Locator;
+  readonly viewProductButtonFirst;
 
   constructor(page: Page) {
     this.page = page;
@@ -35,6 +36,9 @@ export class HomePage {
     });
     this.subscribeButton = page.locator("#subscribe");
     this.cartButton = page.locator("#header").locator('a[href="/view_cart"]');
+    this.viewProductButtonFirst = page
+      .getByRole("link", { name: /View Product/ })
+      .nth(0);
   }
 
   async goto() {
@@ -80,19 +84,25 @@ export class HomePage {
   }
 
   private async dismissAdPopupIfVisible() {
-    const iframes = this.page.locator("iframe[name^='aswift_']");
-    const iframesCount = await iframes.count();
+    const dismissSelector = "#dismiss-button";
+    const timeoutMs = 5_000;
+    const pollIntervalMs = 250;
+    const deadline = Date.now() + timeoutMs;
 
-    for (let i = 0; i < iframesCount; i++) {
-      const dismissButton = iframes
-        .nth(i)
-        .contentFrame()
-        .locator("#dismiss-button");
+    while (Date.now() < deadline) {
+      for (const frame of this.page.frames()) {
+        const dismissButton = frame.locator(dismissSelector).first();
 
-      if (await dismissButton.isVisible()) {
-        await dismissButton.click();
-        return;
+        if (await dismissButton.isVisible().catch(() => false)) {
+          await dismissButton.click({ force: true }).catch(() => undefined);
+
+          if (!(await dismissButton.isVisible().catch(() => false))) {
+            return;
+          }
+        }
       }
+
+      await this.page.waitForTimeout(pollIntervalMs);
     }
   }
 
@@ -110,5 +120,10 @@ export class HomePage {
 
   async clickCartButton() {
     await this.cartButton.click();
+  }
+
+  async clickViewProductButtonFirst() {
+    await this.viewProductButtonFirst.click();
+    await this.dismissAdPopupIfVisible();
   }
 }

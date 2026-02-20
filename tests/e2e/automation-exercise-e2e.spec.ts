@@ -243,15 +243,23 @@ test("Test Case 12: Add Products in Cart", async ({
 
   for (let i = 0; i < numberOfProductsInCart; i++) {
     const productRow = page.locator(`#product-${i + 1}`);
-    expect(await productRow.locator(".cart_price").innerText()).toBe(
-      productPrices.at(i),
-    );
-    expect(await productRow.locator(".cart_quantity").innerText()).toBe("1");
-    expect(await productRow.locator(".cart_total").innerText()).toBe(
-      productPrices.at(i),
-    );
+    await expect(productRow.locator(".cart_price")).toHaveText(productPrices[i]);
+    await expect(productRow.locator(".cart_quantity")).toHaveText("1");
+    await expect(productRow.locator(".cart_total")).toHaveText(productPrices[i]);
   }
 });
 
-
-
+test("Test Case 13: Verify Product quantity in Cart", async ({
+  page,
+  homePage,
+  productPage,
+}) => {
+  await homePage.goto();
+  await homePage.expectHomePageVisible();
+  await homePage.clickViewProductButtonFirst();
+  await productPage.expectTitle();
+  await productPage.fillQuantityInput("4");
+  await productPage.clickAddToCartButton();
+  await productPage.clickViewCartButton();
+  await expect(page.locator(".cart_quantity button")).toHaveText("4");
+});
