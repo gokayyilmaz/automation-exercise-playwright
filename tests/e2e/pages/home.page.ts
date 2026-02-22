@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
+import { dismissAdPopupIfVisible } from "../utils/ad-popup.util";
 
 export class HomePage {
   readonly page: Page;
@@ -75,35 +76,12 @@ export class HomePage {
 
   async clickTestCasesLink() {
     await this.testCasesLink.click();
-    await this.dismissAdPopupIfVisible();
+    await dismissAdPopupIfVisible(this.page);
   }
 
   async clickProductsLink() {
     await this.productsLink.click();
-    await this.dismissAdPopupIfVisible();
-  }
-
-  private async dismissAdPopupIfVisible() {
-    const dismissSelector = "#dismiss-button";
-    const timeoutMs = 5_000;
-    const pollIntervalMs = 250;
-    const deadline = Date.now() + timeoutMs;
-
-    while (Date.now() < deadline) {
-      for (const frame of this.page.frames()) {
-        const dismissButton = frame.locator(dismissSelector).first();
-
-        if (await dismissButton.isVisible().catch(() => false)) {
-          await dismissButton.click({ force: true }).catch(() => undefined);
-
-          if (!(await dismissButton.isVisible().catch(() => false))) {
-            return;
-          }
-        }
-      }
-
-      await this.page.waitForTimeout(pollIntervalMs);
-    }
+    await dismissAdPopupIfVisible(this.page);
   }
 
   async scroolToFooter() {
@@ -124,6 +102,6 @@ export class HomePage {
 
   async clickViewProductButtonFirst() {
     await this.viewProductButtonFirst.click();
-    await this.dismissAdPopupIfVisible();
+    await dismissAdPopupIfVisible(this.page);
   }
 }

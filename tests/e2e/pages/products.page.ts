@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
+import { dismissAdPopupIfVisible } from "../utils/ad-popup.util";
 
 export class ProductsPage {
   readonly page: Page;
@@ -35,6 +36,7 @@ export class ProductsPage {
 
   async clickViewProductLinkFirst() {
     await this.viewProductLinkFirst.click();
+    await dismissAdPopupIfVisible(this.page)
   }
 
   async fillSearchProductTextbox(searchText: string) {
